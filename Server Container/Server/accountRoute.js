@@ -1,7 +1,7 @@
 let express = require("express"),
     path = require("path"),
     uuidv4 = require("uuidv4"),
-    brypt = require("bcrypt");
+    bcrypt = require("bcrypt");
 let router = express.Router();
 
 let Accounts = require("./Modules/account.js");
@@ -13,7 +13,6 @@ router.use(function(req, res, next){
     console.log(req.body);
     next();
 });
-
 
 router.post("/login", function(req, res) { 
     if(!req.body.username) res.json(m(false, "Please send a username"));
@@ -31,7 +30,7 @@ router.post("/login", function(req, res) {
 
             
             let sessionKey = uuidv4();
-            req = newSession(req, sessionKey);
+            req = newSession(req, user, sessionKey);
             user.sessions.push(sessionKey);
             user.save( (err) => {
                 if(err) throw err;
@@ -59,7 +58,7 @@ router.post("/signup", function(req, res) {
             newAcc.password = hash;
 
             let sessionKey = uuidv4();
-            req = newSession(req, sessionKey);
+            req = newSession(req, user, sessionKey);
             newAcc.sessions = [sessionKey];
             newAcc.followers = [];
             newAcc.following = [];
@@ -182,7 +181,7 @@ router.post("/changeAccount", function(req, res) {
     return res.json({passed: true, reason: "No errors", changes: changed});
 });
 
-function newSession(req, sessionKey)
+function newSession(req, user, sessionKey)
 {
     req.session_state.user = {
         username: user.username,
