@@ -14,12 +14,6 @@ global.saltRounds = require("../settings.json").saltRounds;
 
 let router = express.Router();
 
-router.use(function(req, res, next){
-    console.log("Tried");
-    console.log(req.body);
-    next();
-});
-
 router.use(require("./base.js"));
 router.use(require("./accountRoute.js"));
 

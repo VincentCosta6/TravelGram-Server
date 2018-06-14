@@ -8,9 +8,7 @@ let Accounts = require("./Modules/account.js");
 
 let userVersion = require("../settings.json");
 
-router.use(function(req, res, next){
-    console.log("Tried");
-    console.log(req.body);
+router.use(function(req, res, next) {
     next();
 });
 
@@ -52,24 +50,34 @@ router.post("/signup", function(req, res) {
         bcrypt.hash(req.body.password, global.saltRounds, function(err2, hash) {
             if(err2) {console.log(err); return res.json(m(false, "You caused a big error"))};
 
+            console.log("");
             let newAcc = new Accounts();
 
             newAcc.username = req.body.username;
             newAcc.password = hash;
 
+            user = {
+                username: req.body.username,
+                email: "Not set"
+            };
+            console.log("");
             let sessionKey = uuidv4();
             req = newSession(req, user, sessionKey);
             newAcc.sessions = [sessionKey];
             newAcc.followers = [];
             newAcc.following = [];
             
-
-            global.db.insert(newAcc);
+            console.log("");
+            global.db.collection("accounts").insert(newAcc, (err3) => {
+                if(err3) {console.log(err3); return res.json(m(false, "You caused a big error"))};
+                console.log("");
+                return res.json(m(true, "Signup successful"));
+            });
         });
 
         
     });
-    return res.json(m(true, "Connection received"));
+    
 });
 
 router.post("/logout", function(req, res) {
