@@ -1,0 +1,6 @@
+{
+  "httpPort" : 81,
+
+  "https" : false,
+  "httpsPort" : 80
+}

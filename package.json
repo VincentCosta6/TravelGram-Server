@@ -1,0 +1,19 @@
+{
+  "name": "travelgram-server",
+  "version": "1.0.0",
+  "description": "Social Media travel platform",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VincentCosta6/TravelGram-Server.git"
+  },
+  "author": "Vincent Costa",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/VincentCosta6/TravelGram-Server/issues"
+  },
+  "homepage": "https://github.com/VincentCosta6/TravelGram-Server#readme"
+}
