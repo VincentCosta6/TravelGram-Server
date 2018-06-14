@@ -73,6 +73,115 @@ router.post("/signup", function(req, res) {
     return res.json(m(true, "Connection received"));
 });
 
+router.post("/logout", function(req, res) {
+    if(!req.session_state.user) return res.json(m(false, "Session doesnt exist"));
+    req.session_state.reset();
+    Accounts.update({username: req.session_state.user.username}, {$pull: {sessions: req.session_state.sessionKey}}, (err, user) => {
+        if(err) {console.log(err); return res.json(m(false, "You caused a big error"))};
+        
+        return res.json({redirect: "/login"});
+    });
+});
+
+router.post("/changeAccount", function(req, res) {
+    if(!req.session_state.user) return res.json(m(false, "Session doesnt exist"));
+    let changed = false;
+    let returnMessage = "";
+    
+    if(req.body.username)
+    {
+        Accounts.findOne({username: req.session_state.user.username}, (err, user) => {
+            if(err) {console.log(err); return res.json(m(false, "You caused a big error"))};
+
+            if(!user) user.username = req.body.username;
+
+            user.save( (err2) => {
+                if(err2) throw err;
+                return;
+            });
+        });
+        changed = true;
+    }
+    if(req.body.password)
+    {
+        if(!req.body.oldPassword) return res.json(m(false, "Enter your old password"));
+        Accounts.findOne({username: req.session_state.user.username}, (err, user) => {
+            bcrypt.compare(req.body.oldPassword, user.password, (err2, res) => {
+                if(err2) {console.log(err2); return res.json(m(false, "You caused a big error"))};
+
+                if(res == false) return res.json(m(false, "Password incorrect"));
+
+                bcrypt.hash(req.body.password, global.saltRounds, (err3, hash) => {
+                    if(err3) {console.log(err3); return res.json(m(false, "You caused a big error"))};
+                    user.password = hash;
+
+                    user.save( (err4) => {
+                        if(err4) throw err4;
+
+                        return;
+                    });
+                });
+            });
+        });
+        changed = true;
+    }
+    if(req.body.firstName)
+    {
+        Accounts.update({username: req.session_state.user.username}, {$set: {firstName: req.body.firstName}}, (err, user) => {
+            if(err) {console.log(err); return res.json(m(false, "You caused a big error"))};
+
+            return;
+        });
+        changed = true;
+    }
+    if(req.body.lastName)
+    {
+        Accounts.update({username: req.session_state.user.username}, {$set: {lastName: req.body.lastName}}, (err, user) => {
+            if(err) {console.log(err); return res.json(m(false, "You caused a big error"))};
+
+            return;
+        });
+        changed = true;
+    }
+    if(req.body.email)
+    {
+        Accounts.update({username: req.session_state.user.username}, {$set: {email: req.body.email}}, (err, user) => {
+            if(err) {console.log(err); return res.json(m(false, "You caused a big error"))};
+
+            return;
+        });
+        changed = true;
+    }
+    if(req.body.phone)
+    {
+        Accounts.update({username: req.session_state.user.username}, {$set: {phone: req.body.phone}}, (err, user) => {
+            if(err) {console.log(err); return res.json(m(false, "You caused a big error"))};
+
+            return;
+        });
+        changed = true;
+    }
+    if(req.body.birthday)
+    {
+        Accounts.update({username: req.session_state.user.username}, {$set: {birthday: req.body.birthday}}, (err, user) => {
+            if(err) {console.log(err); return res.json(m(false, "You caused a big error"))};
+
+            return;
+        });
+        changed = true;
+    }
+    if(req.body.twoFactor)
+    {
+        Accounts.update({username: req.session_state.user.username}, {$set: {twoFactor: req.body.twoFactor}}, (err, user) => {
+            if(err) {console.log(err); return res.json(m(false, "You caused a big error"))};
+
+            return;
+        });
+        changed = true;
+    }
+    return res.json({passed: true, reason: "No errors", changes: changed});
+});
+
 function newSession(req, sessionKey)
 {
     req.session_state.user = {
