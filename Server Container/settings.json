@@ -2,5 +2,10 @@
   "httpPort" : 81,
 
   "https" : false,
-  "httpsPort" : 80
+  "httpsPort" : 80,
+
+  "sessionKey" : "1.0.0",
+  "userVersion" : "1.0.0",
+
+  "saltRounds" : 13
 }

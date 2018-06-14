@@ -15,13 +15,13 @@ let key = require("./secretKey.json").key;
 
 if(!key)
 {
-  console.log("Please create a json file called secretKey.json add (key : \"Your key here\")");
-  throw Error("Please create a json file called secretKey.json add (key : \"Your key here\")");
+  console.log("Please create a json file called secretKey.json add {key : \"Your key here\"}");
+  throw Error("Please create a json file called secretKey.json add {key : \"Your key here\"}");
   return -1;
 }
 
 app.use(clientSessions({
-  secret: key, // can be anything
+  secret: key, 
   maxAge: 23457862344
 }));
 
