@@ -24,6 +24,10 @@ let schema = global.mongoose.Schema({
         type: String,
         default: "Not set"
     },
+    photoLink: {
+        type: String,
+        default: "Not set"
+    },
     birthday: {
         type: String
     },
@@ -51,6 +55,6 @@ let schema = global.mongoose.Schema({
         required: true
     }
 });
-let account = global.db.model("account", schema);
+let account = global.db.model("accounts", schema);
 
 module.exports = account;
