@@ -17,4 +17,9 @@ $(document).ready(function() {
             }
           });
     }));
+    GET("/userInfo", (data) => {
+        $("username").html(data.user.username);
+        $("email").html(data.user.email);
+    });
+    
 });

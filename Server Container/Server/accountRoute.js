@@ -206,6 +206,20 @@ router.post("/changeAccount", function(req, res) {
     return res.json({passed: true, reason: "No errors", changes: changed});
 });
 
+router.get("/userInfo", function(req, res) {
+    if(!req.session_state.user.username) return res.json(m(false, "No session"));
+    Accounts.findOne({username: req.session_state.user.username}, (err, user) => {
+        if(err) {console.log(err); return res.json(m(false, "You caused a big error"));}
+        
+        let ret = {
+            username: user.username,
+            email: user.email
+        };
+
+        return res.json({user: ret});
+    });
+});
+
 function newSession(req, user, sessionKey)
 {
     req.session_state.user = {
