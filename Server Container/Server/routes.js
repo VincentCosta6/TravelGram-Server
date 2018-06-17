@@ -16,5 +16,7 @@ let router = express.Router();
 
 router.use(require("./base.js"));
 router.use(require("./accountRoute.js"));
+router.use(require("./postRoute.js"));
+router.use(require("./feedRoute.js"));
 
 module.exports = router;
