@@ -32,7 +32,7 @@ router.post("/login", function(req, res) {
             user.sessions.push(sessionKey);
             user.save( (err) => {
                 if(err) throw err;
-                return res.json({redirect: "/session"});
+                return res.json({passed: true, redirect: "/session"});
             });
         });
     });
@@ -68,7 +68,7 @@ router.post("/signup", function(req, res) {
             
             global.db.collection("accounts").insert(newAcc, (err3) => {
                 if(err3) {console.log(err3); return res.json(m(false, "You caused a big error"));}
-                return res.json({redirect: "/session"});
+                return res.json({passed: true, redirect: "/session"});
             });
         });
 
@@ -108,19 +108,16 @@ router.post("/changeAccount", function(req, res) {
     if(!req.session_state.user) return res.json(m(false, "Session doesnt exist"));
     let changed = false;
     let returnMessage = "";
+
+    for(let i in req.body)
+    {
+
+    }
     
     if(req.body.username)
     {
-        Accounts.findOne({username: req.session_state.user.username}, (err, user) => {
-            if(err) {console.log(err); return res.json(m(false, "You caused a big error"));}
-
-            if(!user) user.username = req.body.username;
-
-            user.save( (err2) => {
-                if(err2) throw err;
-                return;
-            });
-        });
+        console.log("Username changed");
+        
         changed = true;
     }
     if(req.body.password)
@@ -227,6 +224,41 @@ function newSession(req, user, sessionKey)
     req.session_state.keyVersion = global.keyVersion;
 
     return req;
+}
+
+function usernameChange(req, res, newName) {
+    Accounts.findOne({username: req.session_state.user.username},  function(err, user) {
+        if(err) {console.log(err); return m(false, "You caused a big error");}
+
+        if(!user) user.username = req.body.username;
+        else return m(false, "Username taken");
+
+        user.save( (err2) => {
+            if(err2) throw err;
+            return m(true, "Success usernameChange");
+        });
+    });
+}
+function passwordChange(req, res, newName) {
+
+}
+function firstNameChange(req, res, newName) {
+
+}
+function lastNameChange(req, res, newName) {
+
+}
+function emailChange(req, res, newName) {
+
+}
+function phoneChange(req, res, newName) {
+
+}
+function birthdayChange(req, res, newName) {
+
+}
+function twoFactorChange(req, res, newName) {
+
 }
 
 

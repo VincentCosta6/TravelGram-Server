@@ -40,4 +40,16 @@ $(document).ready(function() {
             }
         });
     });
+
+    $("#change").click( () => {
+        let req = {};
+        if($("#userN").val() != "") req.username = $("#userN").val();
+        if($("#userP").val() != "") req.password = $("#userP").val();
+        if($("#userE").val() != "") req.email = $("#userE").val();
+        if($("#userPhone").val() != "") req.phone = $("#userPhone").val();
+
+        POST("/changeAccount", req, (data) => {
+            alert(data);
+        });
+    });
 });
