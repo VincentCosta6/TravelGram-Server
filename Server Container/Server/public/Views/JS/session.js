@@ -30,4 +30,14 @@ $(document).ready(function() {
 
         });
     });
+    $("#search").click( () => {
+        $("#arr1").empty();
+        GET("/findUser", {username: $("#find").val()}, (data) => {
+            for(let i in data.users)
+            {
+                let a = `<li>${data.users[i]}</li>`;
+                $("#arr1").append(a);
+            }
+        });
+    });
 });

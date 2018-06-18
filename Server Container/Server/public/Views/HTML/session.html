@@ -6,18 +6,23 @@
         <h1>This is your session</h1>
         <form id="addf" enctype="multipart/form-data" action="/Image">
             <div id="add">
-              <input style="width: 600px;" type="file" id="url" name="sample"></input><br>
-              <div style="margin-top: 100px "></div>
-              <button id="upload" type="submit">Submit</button>
-              <div id = "add" style="margin-top: 20px "></div>
+                <input style="width: 600px;" type="file" id="url" name="sample"></input><br>
+                <div style="margin-top: 100px "></div>
+                <button id="upload" type="submit">Submit</button>
+                <div id = "add" style="margin-top: 20px "></div>
             </div>
-          </form>
-          <br>
-          <h1 id = "username"></h1><br>
-          <h1 id = "email"></h1><br>
-          <br>
+        </form>
+        <br>
+        <h1 id = "username"></h1><br>
+        <h1 id = "email"></h1><br>
+        <br>
 
-          <button id = "logout">Log out</button>
+        <label>Find users</label><input id = "find" type = "text"></input> <button id="search">Search</button>
+        <ul id = "arr1">
+
+        </ul>
+
+        <button id = "logout">Log out</button>
         <script src="js/session.js"></script>
         <script src="js/cleanAjax.js"></script>
     </body>

@@ -90,7 +90,7 @@ router.post("/logout", function(req, res) {
 router.get("/findUser", function(req, res) {
     if(!req.query.username) return res.json(m(false, "You must send a username"));
 
-    Accounts.find({username: req.query.username}, (err, users) => {
+    Accounts.find({username: new RegExp(req.query.username, "i")}, (err, users) => {
         if(err) {console.log(err); return res.json(m(false, "You caused a big error"));}
 
         if(users.length == 0) return res.json(m(false, "No users found"));
@@ -101,7 +101,7 @@ router.get("/findUser", function(req, res) {
             arr.push(users[i].username);
 
         return res.json({users:arr});
-    });
+    }).limit(10);
 });
 
 router.post("/changeAccount", function(req, res) {
