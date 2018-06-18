@@ -1,6 +1,6 @@
 $(document).ready(function(){
-    $("enter").click( () => {
-        POST("/login", {username: $("username").val(), password: $("password").val()}, (data) => {
+    $("#enter").click( () => {
+        POST("/login", {username: $("#username").val(), password: $("#password").val()}, (data) => {
             if(data.passed == false) {
                 alert(data.reason);
             }

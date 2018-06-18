@@ -21,10 +21,10 @@ router.post("/login", function(req, res) {
 
         if(!user) return res.json(m(false, "Account username not found"));
 
-        bcrypt.compare(req.body.password, user.password, function(err, res) {
+        bcrypt.compare(req.body.password, user.password, function(err, res2) {
             if(err) {console.log(err); return res.json(m(false, "You caused a big error"));}
 
-            if(res == false) return res.json(m(false, "Incorrect password"));
+            if(res2 == false) return res.json(m(false, "Incorrect password"));
 
             
             let sessionKey = uuidv4();
@@ -66,12 +66,13 @@ router.post("/signup", function(req, res) {
             newAcc.sessions = [sessionKey];
             newAcc.followers = [];
             newAcc.following = [];
+            newAcc.userVersion = userVersion;
             
             console.log("");
             global.db.collection("accounts").insert(newAcc, (err3) => {
                 if(err3) {console.log(err3); return res.json(m(false, "You caused a big error"));}
                 console.log("");
-                return res.json(m(true, "Signup successful"));
+                return res.json({redirect: "/session"});
             });
         });
 

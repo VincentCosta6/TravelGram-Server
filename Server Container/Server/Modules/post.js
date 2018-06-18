@@ -19,4 +19,4 @@ let schema = global.mongoose.Schema({
 });
 let posts = global.db.model("posts", schema);
 
-module.exports = account;
+module.exports = posts;
