@@ -6,7 +6,7 @@ let router = express.Router();
 
 let Accounts = require("./Modules/account.js");
 
-let userVersion = require("../settings.json");
+let version = require("../settings.json").userVersion;
 
 router.use(function(req, res, next) {
     next();
@@ -50,28 +50,24 @@ router.post("/signup", function(req, res) {
         bcrypt.hash(req.body.password, global.saltRounds, function(err2, hash) {
             if(err2) {console.log(err); return res.json(m(false, "You caused a big error"));}
 
-            console.log("");
             let newAcc = new Accounts();
 
             newAcc.username = req.body.username;
             newAcc.password = hash;
-
+            newAcc.userVersion = version;
             user = {
                 username: req.body.username,
                 email: "Not set"
             };
-            console.log("");
             let sessionKey = uuidv4();
             req = newSession(req, user, sessionKey);
             newAcc.sessions = [sessionKey];
             newAcc.followers = [];
             newAcc.following = [];
-            newAcc.userVersion = userVersion;
             
-            console.log("");
+            
             global.db.collection("accounts").insert(newAcc, (err3) => {
                 if(err3) {console.log(err3); return res.json(m(false, "You caused a big error"));}
-                console.log("");
                 return res.json({redirect: "/session"});
             });
         });
@@ -83,10 +79,10 @@ router.post("/signup", function(req, res) {
 
 router.post("/logout", function(req, res) {
     if(!req.session_state.user) return res.json(m(false, "Session doesnt exist"));
-    req.session_state.reset();
+    
     Accounts.update({username: req.session_state.user.username}, {$pull: {sessions: req.session_state.sessionKey}}, (err, user) => {
         if(err) {console.log(err); return res.json(m(false, "You caused a big error"));}
-        
+        req.session_state.reset();
         return res.json({redirect: "/login"});
     });
 });
@@ -208,7 +204,7 @@ router.post("/changeAccount", function(req, res) {
 });
 
 router.get("/userInfo", function(req, res) {
-    if(!req.session_state.user.username) return res.json(m(false, "No session"));
+    if(!req.session_state || !req.session_state.user) return res.json(m(false, "No session"));
     Accounts.findOne({username: req.session_state.user.username}, (err, user) => {
         if(err) {console.log(err); return res.json(m(false, "You caused a big error"));}
         

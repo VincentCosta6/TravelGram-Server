@@ -21,5 +21,13 @@ $(document).ready(function() {
         $("#username").html(data.user.username + "");
         $("#email").html(data.user.email + "");
     });
-    
+    $("#logout").click( ()=> {
+        POST("/logout", {}, (data) => {
+            if(data.passed == false) {
+                alert(data.reason);
+            }
+            if(data.redirect) window.location = data.redirect;
+
+        });
+    });
 });

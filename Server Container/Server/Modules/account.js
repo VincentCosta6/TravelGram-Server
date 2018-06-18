@@ -8,6 +8,10 @@ let schema = global.mongoose.Schema({
         type: String,
         require: true
     },
+    userVersion: {
+        type: String,
+        required: true
+    },
     firstName: {
         type: String,
         default: "Not set"
@@ -49,11 +53,8 @@ let schema = global.mongoose.Schema({
     twoFactor: {
         type: Boolean,
         default: false
-    },
-    userVersion: {
-        type: String,
-        required: true
     }
+    
 });
 let account = global.db.model("accounts", schema);
 
