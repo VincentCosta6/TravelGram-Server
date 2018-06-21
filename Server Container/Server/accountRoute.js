@@ -32,6 +32,7 @@ router.post("/login", function(req, res) {
             user.sessions.push(sessionKey);
             user.save( (err) => {
                 if(err) throw err;
+                console.log("Successful login for " + user.username);
                 return res.json({passed: true, redirect: "/session"});
             });
         });
@@ -68,6 +69,7 @@ router.post("/signup", function(req, res) {
             
             global.db.collection("accounts").insert(newAcc, (err3) => {
                 if(err3) {console.log(err3); return res.json(m(false, "You caused a big error"));}
+                console.log("Successful signup for " + newAcc.username);
                 return res.json({passed: true, redirect: "/session"});
             });
         });
