@@ -13,8 +13,8 @@ router.use(function(req, res, next) {
 });
 
 router.post("/login", function(req, res) { 
-    if(!req.body.username) res.json(m(false, "Please send a username"));
-    if(!req.body.password) res.json(m(false, "Please send a password"));
+    if(!req.body.username) return res.json(m(false, "Please send a username"));
+    if(!req.body.password) return res.json(m(false, "Please send a password"));
 
     Accounts.findOne({username: req.body.username}, (err, user) => {
         if(err) {console.log(err); return res.json(m(false, "You caused a big error"));}
@@ -40,8 +40,8 @@ router.post("/login", function(req, res) {
 });
 
 router.post("/signup", function(req, res) { 
-    if(!req.body.username) res.json(m(false, "Please send a username"));
-    if(!req.body.password) res.json(m(false, "Please send a password"));
+    if(!req.body.username) return res.json(m(false, "Please send a username"));
+    if(!req.body.password) return res.json(m(false, "Please send a password"));
 
     Accounts.findOne({username: req.body.username}, (err, user) => {
         if(err) {console.log(err); return res.json(m(false, "You caused a big error"));}
